@@ -16,6 +16,13 @@
         Hem
       </v-btn>
   </v-toolbar-items>
+  <v-toolbar-items>
+      <v-btn text color="white"
+        to="/search">
+        <v-icon class="mr-3">mdi-magnify</v-icon>
+        Sök
+      </v-btn>
+  </v-toolbar-items>
 </v-app-bar>
 </template>
 
