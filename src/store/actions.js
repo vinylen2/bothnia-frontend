@@ -1,5 +1,11 @@
-import _ from 'lodash';
+// import _ from 'lodash';
+import api from './api';
 
-/* eslint-disable no-console */
 export const actions = {
+  getExample() {
+    api.get('/example')
+      .then((response) => {
+        console.log(response.data);
+      });
+  },
 };
