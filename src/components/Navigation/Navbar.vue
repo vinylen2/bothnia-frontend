@@ -23,11 +23,25 @@
         Sök
       </v-btn>
   </v-toolbar-items>
+  <v-spacer></v-spacer>
+  <v-toolbar-items>
+      <v-btn text color="white" v-if="!isLoggedIn"
+        @click="$store.commit('showLoginDialog')"
+        to="/search">
+        Logga in
+      </v-btn>
+  </v-toolbar-items>
 </v-app-bar>
 </template>
 
 <script>
-export default {
+import { mapGetters } from 'vuex';
 
+export default {
+  computed: {
+    ...mapGetters([
+      'isLoggedIn',
+    ]),
+  },
 };
 </script>

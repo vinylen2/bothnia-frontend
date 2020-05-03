@@ -14,26 +14,22 @@
       </v-text-field>
     </v-flex>
     <v-flex xs12 sm6 md4>
-      <v-select
-        label="Ämnen"
-        v-model="selectedSubjects"
-        :items="subjects"
-        item-text="subject"
-        multiple
-        ref="subjects"
-        chips
-        autocomplete
-        deletable-chips
-        max-height="400"
-        hint="Välj ämnen"
-        persistent-hint>
-        <template slot="selection" slot-scope="data">
-          <v-chip close
-            @input="remove(data.item)"
-            :color="data.item.color">{{data.item.subject}}
-          </v-chip>
-        </template>
-      </v-select>
+      <v-menu ref="menu"
+        v-model="menu">
+          <template v-slot:activator="{ on }">
+            <v-combobox
+              v-model="dates"
+              multiple
+              chips
+              small-chips
+              prepend-icon="mdi-calendar"
+              label="Välj datumintervall"
+              readonly
+              v-on="on"
+            ></v-combobox>
+          </template>
+          <v-date-picker v-model="dates" range></v-date-picker>
+      </v-menu>
     </v-flex>
     <v-flex xs12 sm6 md4>
       <v-select
@@ -62,9 +58,10 @@ export default {
   props: ['chipPressValue'],
   data() {
     return {
+      menu: false,
       searchString: '',
+      dates: [],
       selectedGrades: [],
-      selectedSubjects: [],
     };
   },
   computed: {
@@ -77,4 +74,8 @@ export default {
 </script>
 
 <style scoped>
+
+/deep/[role="combobox"] {
+  padding-bottom: 10px;
+}
 </style>

@@ -26,6 +26,5 @@ export default {
       'drawer',
     ]),
   },
-
 };
 </script>
