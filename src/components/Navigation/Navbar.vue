@@ -24,12 +24,19 @@
       </v-btn>
   </v-toolbar-items>
   <v-spacer></v-spacer>
-  <v-toolbar-items>
-      <v-btn text color="white" v-if="!isLoggedIn"
+  <v-toolbar-items v-if="!isLoggedIn">
+      <v-btn text color="white"
         @click="$store.commit('showLoginDialog')"
         to="/search">
         Logga in
       </v-btn>
+  </v-toolbar-items>
+  <v-toolbar-items v-else>
+    <v-btn text color="white"
+      to="/profile">
+      Profil
+      <v-icon class="ml-3">mdi-account</v-icon>
+    </v-btn>
   </v-toolbar-items>
 </v-app-bar>
 </template>
