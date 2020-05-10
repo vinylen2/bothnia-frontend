@@ -2,8 +2,8 @@ export const getters = {
   drawer: (state) => {
     return state.nav.drawer;
   },
-  grades: (state) => {
-    return state.grades;
+  tags: (state) => {
+    return state.tags;
   },
   loginDialog: (state) => {
     return state.nav.loginDialog;

@@ -3,7 +3,7 @@
     <v-tooltip left v-if="!isLoggedIn">
       <template v-slot:activator="{on}">
         <v-btn bottom right fixed fab v-on="on">
-          <v-icon>mdi-plus</v-icon>
+          <v-icon>mdi-image-plus</v-icon>
         </v-btn>
       </template>
       <span>Logga in för att ladda upp bild</span>

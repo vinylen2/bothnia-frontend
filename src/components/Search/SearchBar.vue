@@ -32,19 +32,19 @@
       </v-menu>
     </v-flex>
     <v-flex xs12 sm6 md4>
-      <v-select
-        label="Årskurser"
-        v-model="selectedGrades"
-        :items="grades"
-        item-text="grade"
+      <v-autocomplete
+        label="Taggar"
+        v-model="selectedTags"
+        :items="tags"
+        item-text="name"
         multiple
-        ref="grades"
+        ref="tags"
         chips
         deletable-chips
         max-height="400"
-        hint="Välj årskurs"
+        hint="Välj taggar"
         persistent-hint>
-      </v-select>
+      </v-autocomplete>
     </v-flex>
   </v-layout>
 </v-container>
@@ -61,13 +61,12 @@ export default {
       menu: false,
       searchString: '',
       dates: [],
-      selectedGrades: [],
+      selectedTags: [],
     };
   },
   computed: {
     ...mapGetters([
-      'subjects',
-      'grades',
+      'tags',
     ]),
   },
 }

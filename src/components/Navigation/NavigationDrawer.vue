@@ -1,6 +1,6 @@
 <template>
 <v-card>
-  <v-navigation-drawer v-model="drawer"
+  <v-navigation-drawer v-model="drawer" temporary
     app>
     <v-list dense>
       <v-list-item>

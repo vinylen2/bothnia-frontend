@@ -27,10 +27,9 @@
         label="Lösenord"
         required
       ></v-text-field>
-
       <v-btn
         submit
-        color="blue lighten-2"
+        color="teal lighten-2"
         class="mr-4"
         type="submit"
       >

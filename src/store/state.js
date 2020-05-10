@@ -4,7 +4,24 @@ export const state = {
     loginDialog: false,
   },
   user: {
-    token: false,
+    token: true,
   },
-  grades: [],
+  tags: [
+    {
+      id: 0,
+      name:'Djur',
+    },
+    {
+      id: 0,
+      name:'Skog',
+    },
+    {
+      id: 0,
+      name:'Höst',
+    },
+    {
+      id: 0,
+      name:'Natur',
+    },
+  ],
 };

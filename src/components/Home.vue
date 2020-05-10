@@ -4,8 +4,7 @@
     <v-col align="center" class="headline">
       <span>Startsida</span>
     </v-col>
-    <UploadImage 
-      @closeDialog="closeDialog"/>
+    <UploadImage @closeDialog="closeDialog"/>
   </v-row>
 </v-content>
 </template>

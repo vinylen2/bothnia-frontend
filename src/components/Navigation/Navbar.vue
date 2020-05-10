@@ -1,6 +1,6 @@
 <template>
 <v-app-bar
-  color="blue lighten-2"
+  color="teal lighten-1"
   fixed
   app>
   <v-toolbar-items>
@@ -35,7 +35,7 @@
     <v-btn text color="white"
       to="/profile">
       Profil
-      <v-icon class="ml-3">mdi-account</v-icon>
+      <v-icon class="ml-3">mdi-account-circle</v-icon>
     </v-btn>
   </v-toolbar-items>
 </v-app-bar>
