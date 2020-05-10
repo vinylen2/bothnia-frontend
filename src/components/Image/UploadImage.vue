@@ -14,7 +14,7 @@
       right
       fixed
       fab>
-      <v-icon>mdi-plus</v-icon>
+      <v-icon>mdi-image-plus</v-icon>
     </v-btn>
   <v-dialog v-model="uploadDialog">
     <v-card>
@@ -32,24 +32,17 @@
                   label="File input"
                   filled
                   v-model="image"
+                  accept="image/*"
                   prepend-icon="mdi-camera">
                 </v-file-input>
               </v-col>
             </v-row>
             <v-row>
               <v-col cols="6">
-                <v-text-field label="Förnamn" 
-                  required 
-                  :rules="rules"
-                  v-model="firstname">
-                </v-text-field>
+                <TagPicker />
               </v-col>
-              <v-col cols="6">
-                <v-text-field label="Efternamn" 
-                  required 
-                  :rules="rules"
-                  v-model="lastname">
-                </v-text-field>
+              <v-col>
+                {{image}}
               </v-col>
             </v-row>
             <v-row justify="center">
@@ -65,10 +58,17 @@
 </template>
 
 <script>
+  /* eslint-disable no-unused-vars */
 import { mapGetters } from 'vuex';
+import TagPicker from '@/components/Search/TagPicker';
+
+import ExifReader from 'exifreader';
 
 export default {
   name: 'upload-image',
+  components: {
+    TagPicker,
+  },
   data: () => ({
     uploadDialog: false,
     valid: false,
@@ -85,6 +85,13 @@ export default {
       'token',
     ]),
   },
+  watch: {
+    image() {
+      if (this.image) {
+        this.extractMetaData();
+      }
+    },
+  },
   methods: {
     /* eslint-disable no-console */
     closeDialog() {
@@ -95,6 +102,11 @@ export default {
     resetFields() {
       this.firstname = '';
       this.lastname = '';
+    },
+    extractMetaData() {
+      console.log(typeof(this.image));
+      // const tags = ExifReader.load(this.image);
+      // console.log(tags);
     },
     uploadImage() {
 

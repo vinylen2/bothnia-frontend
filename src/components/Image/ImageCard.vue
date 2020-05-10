@@ -14,7 +14,7 @@
       </v-col>
     </v-row>
     <v-card-title class="pb-1 display-1" v-text="image.name"></v-card-title>
-    <v-card-title class="pt-0 subtitle-1"  v-text="image.photographer"></v-card-title>
+    <v-card-title class="pt-0 subtitle-1"  v-text="authorDate"></v-card-title>
   </v-img>
 
   <v-card-actions>
@@ -24,7 +24,6 @@
 
     <v-chip v-for="tag in tags" :key="tag.id" class="mr-1 ml-1">
       {{tag.name}}
-
     </v-chip>
     <div>
     </div>
@@ -36,6 +35,11 @@
 export default {
   name: 'image-card',
   props: ['image'],
+  computed: {
+    authorDate() {
+      return this.image.photographer + ', ' + this.image.date;
+    },
+  },
   data: () => ({
     tags: [
       {
