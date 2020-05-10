@@ -32,7 +32,7 @@
                   label="File input"
                   filled
                   v-model="image"
-                  accept="image/*"
+                  accept=".jpg, .jpeg"
                   prepend-icon="mdi-camera">
                 </v-file-input>
               </v-col>
@@ -41,8 +41,8 @@
               <v-col cols="6">
                 <TagPicker />
               </v-col>
-              <v-col>
-                {{image}}
+              <v-col cols="6">
+                {{metadata}}
               </v-col>
             </v-row>
             <v-row justify="center">
@@ -78,6 +78,14 @@ export default {
     firstname: '',
     lastname: '',
     image: null,
+    metadata: {
+      GPSLatitude: '',
+      GPSLongitude: '',
+      Model: '',
+      ImageWidth: '',
+      ImageHeight: '',
+      DateTime: '',
+    },
   }),
   computed: {
     ...mapGetters([
@@ -103,10 +111,21 @@ export default {
       this.firstname = '';
       this.lastname = '';
     },
+    checkField() {
+
+    },
     extractMetaData() {
-      console.log(typeof(this.image));
-      // const tags = ExifReader.load(this.image);
-      // console.log(tags);
+      let fr = new FileReader();
+      fr.readAsArrayBuffer(this.image);
+      fr.onload = () => {
+        const tags = ExifReader.load(fr.result);
+        console.log(tags);
+        this.metadata.GPSLongitude = (typeof tags.GPSLongitude.description === 'undefined') ?  null : tags.GPSLongitude.description;
+        // this.metadata.GPSLatitude ? tags.GPSLatitude.description : null;
+        // this.metadata.Model ? tags.Model.description : null;
+        // this.metadata.ImageHeight ? tags['Image Height'].value : null;
+        // this.metadata.ImageWidth ? tags['Image Width'].value : null;
+      };
     },
     uploadImage() {
 
