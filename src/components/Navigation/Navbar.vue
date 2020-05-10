@@ -24,6 +24,9 @@
       </v-btn>
   </v-toolbar-items>
   <v-toolbar-items v-else>
+    <v-btn text color="white">
+      <UploadImage @closeDialog="closeDialog"/>
+    </v-btn>
     <v-btn text color="white"
       to="/profile">
       Profil
@@ -35,8 +38,12 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import UploadImage from '@/components/Image/UploadImage';
 
 export default {
+  components: {
+    UploadImage,
+  },
   computed: {
     ...mapGetters([
       'isLoggedIn',

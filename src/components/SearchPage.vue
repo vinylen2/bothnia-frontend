@@ -19,7 +19,7 @@
 import SearchBar from '@/components/Search/SearchBar';
 import ImageCard from '@/components/Image/ImageCard';
 
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 
 export default {
   components: {
@@ -30,11 +30,17 @@ export default {
     ...mapGetters([
       'isLoggedIn',
     ]),
+    ...mapActions([
+      'getPhotographers',
+      'getTags',
+    ])
   },
   created() {
     if (!this.isLoggedIn) {
       this.$store.commit('showLoginDialog');
     }
+    this.getPhotographers();
+    this.getTags();
   },
   data: () => ({
     images: [

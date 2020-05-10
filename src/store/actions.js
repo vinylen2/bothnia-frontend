@@ -12,10 +12,22 @@ export const actions = {
         console.log(error);
       });
   },
-  getExample() {
-    api.get('/example')
+  getPhotographers({commit}) {
+    api.get('/photographer')
       .then((response) => {
-        console.log(response.data);
+        commit('setPhotographers', response.data);
+      });
+  },
+  getTags({commit}) {
+    api.get('/tag')
+      .then((response) => {
+        commit('setTags', response.data);
+      });
+  },
+  postTag({commit}, payload) {
+    api.post('/tag', payload)
+      .then((response) => {
+        console.log(response);
       });
   },
 };

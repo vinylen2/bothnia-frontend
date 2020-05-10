@@ -12,4 +12,10 @@ export const mutations = {
     // fix this 
     state.user.token = null;
   },
+  setPhotographers: (state, payload) => {
+    state.photographers = payload;
+  },
+  setTags: (state, payload) => {
+    state.tags= payload;
+  },
 };
