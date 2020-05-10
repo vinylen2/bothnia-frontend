@@ -1,4 +1,5 @@
 // import _ from 'lodash';
+  /* eslint-disable no-unused-vars */
 import api from './api';
 
 export const actions = {
@@ -25,7 +26,13 @@ export const actions = {
       });
   },
   postTag({commit}, payload) {
-    api.post('/tag', payload)
+    api.post('/tag', {name: payload})
+      .then((response) => {
+        console.log(response);
+      });
+  },
+  postPhotographer({commit}, payload) {
+    api.post('/photographer', payload)
       .then((response) => {
         console.log(response);
       });

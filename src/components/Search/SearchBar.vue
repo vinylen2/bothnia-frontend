@@ -38,6 +38,8 @@
         :selectedArray="selectedTags"
         :itemTextProp="'name'"
         :hint="'Välj taggar'"
+        :type="'tag'"
+        :multiple="true"
       />
     </v-flex>
     <v-flex xs12 sm6 md4>
@@ -47,6 +49,8 @@
         :selectedArray="selectedPhotographers"
         :itemTextProp="'fName'"
         :hint="'Välj fotograf'"
+        :type="'photographer'"
+        :multiple="true"
       />
     </v-flex>
   </v-layout>

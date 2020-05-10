@@ -6,16 +6,13 @@
     :items="items"
     :item-text="itemTextProp"
     :hint="hint"
-    multiple
-    ref="tags"
+    :multiple="multiple"
     chips
     deletable-chips
     max-height="400"
     persistent-hint>
     <template v-slot:append-outer>
-      <v-icon @click="test">
-        mdi-plus
-      </v-icon>
+      <AddDialog :type="type"/>
     </template>
   </v-autocomplete>
   <v-autocomplete v-else
@@ -24,8 +21,8 @@
     :items="items"
     :item-text="itemTextProp"
     :hint="hint"
-    multiple
-    ref="tags"
+    :ref="type"
+    :multiple="multiple"
     chips
     deletable-chips
     max-height="400"
@@ -34,13 +31,13 @@
 </template>
 
 <script>
+import AddDialog from '@/components/Image/AddDialog';
+
 export default {
-  name: 'picker',
-  props: ['label', 'items', 'selectedArray', 'hint', 'itemTextProp', 'append'],
-  methods: {
-    test() {
-      console.log('test');
-    },
+  components: {
+    AddDialog,
   },
+  name: 'picker',
+  props: ['label', 'items', 'selectedArray', 'hint', 'itemTextProp', 'append', 'type', 'multiple'],
 };
 </script>

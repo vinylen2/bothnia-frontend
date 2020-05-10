@@ -55,6 +55,11 @@ export default {
       // },
     ],
   }),
+  methods: {
+    downloadImage() {
+      console.log('download');
+    },
+  },
 };
 </script>
 

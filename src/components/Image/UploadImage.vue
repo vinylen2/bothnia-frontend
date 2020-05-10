@@ -1,6 +1,6 @@
 <template>
 <div>
-  <v-btn text color="white"
+  <v-btn text color="white" class="ma-0 pa-0"
     :hover="false"
     @click="uploadDialog = true">
     <v-icon>mdi-image-plus</v-icon>
@@ -34,6 +34,9 @@
                   :selectedArray="selectedTags"
                   :itemTextProp="'name'"
                   :hint="'Välj taggar'"
+                  :type="'tag'"
+                  :append="true"
+                  :multiple="true"
                 />
               </v-col>
               <v-col cols="6">
@@ -43,7 +46,9 @@
                   :selectedArray="selectedPhotographers"
                   :itemTextProp="'fName'"
                   :hint="'Välj fotograf'"
+                  :type="'photographer'"
                   :append="true"
+                  :multiple="false"
                 />
               </v-col>
               <v-col cols="6">
@@ -123,7 +128,6 @@ export default {
       fr.readAsArrayBuffer(this.image);
       fr.onload = () => {
         const tags = ExifReader.load(fr.result);
-        console.log(tags);
         this.metadata.GPSLongitude = (typeof tags.GPSLongitude.description === 'undefined') ?  null : tags.GPSLongitude.description;
         // this.metadata.GPSLatitude ? tags.GPSLatitude.description : null;
         // this.metadata.Model ? tags.Model.description : null;

@@ -39,8 +39,8 @@ export default {
     if (!this.isLoggedIn) {
       this.$store.commit('showLoginDialog');
     }
-    this.getPhotographers();
-    this.getTags();
+    this.getPhotographers;
+    this.getTags;
   },
   data: () => ({
     images: [
