@@ -2,7 +2,7 @@
   <v-app id="app">
     <Navbar />
     <NavigationDrawer/>
-    <v-dialog v-model="loginDialog">
+    <v-dialog v-model="loginDialog" persistent>
       <Login />
     </v-dialog>
     <v-content>
