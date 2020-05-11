@@ -16,22 +16,17 @@
         Hem
       </v-btn>
   </v-toolbar-items>
-  <v-toolbar-items>
-      <v-btn text color="white"
-        to="/search">
-        <v-icon class="mr-3">mdi-magnify</v-icon>
-        Sök
-      </v-btn>
-  </v-toolbar-items>
   <v-spacer></v-spacer>
   <v-toolbar-items v-if="!isLoggedIn">
       <v-btn text color="white"
-        @click="$store.commit('showLoginDialog')"
-        to="/search">
+        @click="$store.commit('showLoginDialog')">
         Logga in
       </v-btn>
   </v-toolbar-items>
   <v-toolbar-items v-else>
+    <v-btn text color="white">
+      <UploadImage @closeDialog="closeDialog"/>
+    </v-btn>
     <v-btn text color="white"
       to="/profile">
       Profil
@@ -43,8 +38,12 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import UploadImage from '@/components/Image/UploadImage';
 
 export default {
+  components: {
+    UploadImage,
+  },
   computed: {
     ...mapGetters([
       'isLoggedIn',

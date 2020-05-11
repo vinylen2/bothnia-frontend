@@ -1,29 +1,44 @@
 <template>
   <v-content class="pt-0">
-    <SearchBar />
-    <v-row class="ma-2">
-      <v-col cols="12" md="6" lg="4"
-        v-for="image in images" 
-        :key="image.id">
-        <ImageCard 
-          :image="image"
-        />
-      </v-col>
-    </v-row>
-    <UploadImage @closeDialog="closeDialog"/>
+    <div v-if="isLoggedIn">
+      <SearchBar />
+      <v-row class="ma-2">
+        <v-col cols="12" md="6" lg="4"
+          v-for="image in images" 
+          :key="image.id">
+          <ImageCard 
+            :image="image"
+          />
+        </v-col>
+      </v-row>
+    </div>
   </v-content>
 </template>
 
 <script>
 import SearchBar from '@/components/Search/SearchBar';
-import UploadImage from '@/components/Image/UploadImage';
 import ImageCard from '@/components/Image/ImageCard';
-
+import { mapGetters, mapActions } from 'vuex';
 export default {
   components: {
     SearchBar,
-    UploadImage,
     ImageCard,
+  },
+  computed: {
+    ...mapGetters([
+      'isLoggedIn',
+    ]),
+    ...mapActions([
+      'getPhotographers',
+      'getTags',
+    ])
+  },
+  created() {
+    if (!this.isLoggedIn) {
+      this.$store.commit('showLoginDialog');
+    }
+    this.getPhotographers;
+    this.getTags;
   },
   data: () => ({
     images: [
@@ -32,21 +47,21 @@ export default {
         name: 'Liggande älg',
         photographer: 'Hans Eriksson',
         date: '2020-05-10',
-        imagePath: 'https://zoogalaktika.ru/assets/images/mammalia/artiodactyla/ruminantia/cervidae/alces-alces/alces-alces_13.jpg',
+        imagePath: 'http://mssjakt.se/wp-content/uploads/sites/571/2018/05/moose-moose-rack-male-bull-76972.jpeg',
       },
       {
         id: 1,
         name: 'Liggande älg',
         photographer: 'Hans Eriksson',
         date: '2020-05-10',
-        imagePath: 'https://zoogalaktika.ru/assets/images/mammalia/artiodactyla/ruminantia/cervidae/alces-alces/alces-alces_13.jpg',
+        imagePath: 'http://mssjakt.se/wp-content/uploads/sites/571/2018/05/moose-moose-rack-male-bull-76972.jpeg',
       },
       {
         id: 2,
         name: 'Liggande älg',
         photographer: 'Hans Eriksson',
         date: '2020-05-10',
-        imagePath: 'https://zoogalaktika.ru/assets/images/mammalia/artiodactyla/ruminantia/cervidae/alces-alces/alces-alces_13.jpg',
+        imagePath: 'http://mssjakt.se/wp-content/uploads/sites/571/2018/05/moose-moose-rack-male-bull-76972.jpeg',
       },
     ],
   }),

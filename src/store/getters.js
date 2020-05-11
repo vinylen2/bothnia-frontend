@@ -5,6 +5,9 @@ export const getters = {
   tags: (state) => {
     return state.tags;
   },
+  photographers: (state) => {
+    return state.photographers;
+  },
   loginDialog: (state) => {
     return state.nav.loginDialog;
   },

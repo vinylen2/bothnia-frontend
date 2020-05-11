@@ -27,6 +27,10 @@
         label="Lösenord"
         required
       ></v-text-field>
+      <v-btn class="mr-4" color="red lighten-2"
+        @click="$store.commit('closeLoginDialog')">
+        Stäng
+      </v-btn>
       <v-btn
         submit
         color="teal lighten-2"

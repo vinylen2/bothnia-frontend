@@ -1,21 +1,10 @@
 <template>
 <div>
-    <v-tooltip left v-if="!isLoggedIn">
-      <template v-slot:activator="{on}">
-        <v-btn bottom right fixed fab v-on="on">
-          <v-icon>mdi-image-plus</v-icon>
-        </v-btn>
-      </template>
-      <span>Logga in för att ladda upp bild</span>
-    </v-tooltip>
-    <v-btn v-else
-      @click="uploadDialog = true"
-      bottom
-      right
-      fixed
-      fab>
-      <v-icon>mdi-image-plus</v-icon>
-    </v-btn>
+  <v-btn text color="white" class="ma-0 pa-0"
+    :hover="false"
+    @click="uploadDialog = true">
+    <v-icon>mdi-image-plus</v-icon>
+  </v-btn>
   <v-dialog v-model="uploadDialog">
     <v-card>
       <v-card-title>
@@ -29,7 +18,7 @@
             <v-row>
               <v-col>
                 <v-file-input
-                  label="File input"
+                  label="Välj bild"
                   filled
                   v-model="image"
                   accept=".jpg, .jpeg"
@@ -39,7 +28,28 @@
             </v-row>
             <v-row>
               <v-col cols="6">
-                <TagPicker />
+                <Picker 
+                  :label="'Taggar'"
+                  :items="tags"
+                  :selectedArray="selectedTags"
+                  :itemTextProp="'name'"
+                  :hint="'Välj taggar'"
+                  :type="'tag'"
+                  :append="true"
+                  :multiple="true"
+                />
+              </v-col>
+              <v-col cols="6">
+                <Picker 
+                  :label="'Fotograf'"
+                  :items="photographers"
+                  :selectedArray="selectedPhotographers"
+                  :itemTextProp="'fName'"
+                  :hint="'Välj fotograf'"
+                  :type="'photographer'"
+                  :append="true"
+                  :multiple="false"
+                />
               </v-col>
               <v-col cols="6">
                 {{metadata}}
@@ -60,14 +70,14 @@
 <script>
   /* eslint-disable no-unused-vars */
 import { mapGetters } from 'vuex';
-import TagPicker from '@/components/Search/TagPicker';
+import Picker from '@/components/Search/Picker';
 
 import ExifReader from 'exifreader';
 
 export default {
   name: 'upload-image',
   components: {
-    TagPicker,
+    Picker,
   },
   data: () => ({
     uploadDialog: false,
@@ -75,8 +85,8 @@ export default {
     rules: [
       v => !!v || 'Fältet måste fyllas i',
     ],
-    firstname: '',
-    lastname: '',
+    selectedTags: [],
+    selectedPhotographers: [],
     image: null,
     metadata: {
       GPSLatitude: '',
@@ -91,6 +101,8 @@ export default {
     ...mapGetters([
       'isLoggedIn',
       'token',
+      'tags',
+      'photographers',
     ]),
   },
   watch: {
@@ -111,15 +123,11 @@ export default {
       this.firstname = '';
       this.lastname = '';
     },
-    checkField() {
-
-    },
     extractMetaData() {
       let fr = new FileReader();
       fr.readAsArrayBuffer(this.image);
       fr.onload = () => {
         const tags = ExifReader.load(fr.result);
-        console.log(tags);
         this.metadata.GPSLongitude = (typeof tags.GPSLongitude.description === 'undefined') ?  null : tags.GPSLongitude.description;
         // this.metadata.GPSLatitude ? tags.GPSLatitude.description : null;
         // this.metadata.Model ? tags.Model.description : null;

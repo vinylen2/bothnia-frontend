@@ -9,7 +9,7 @@
         @cleared="console.log('cleard')"
         hide-details
         v-model="searchString"
-        placeholder="Search"
+        placeholder="Sök"
         style="max-width: 500px; min-width: 128px border-radius: 25%">
       </v-text-field>
     </v-flex>
@@ -32,19 +32,26 @@
       </v-menu>
     </v-flex>
     <v-flex xs12 sm6 md4>
-      <v-autocomplete
-        label="Taggar"
-        v-model="selectedTags"
+      <Picker 
+        :label="'Taggar'"
         :items="tags"
-        item-text="name"
-        multiple
-        ref="tags"
-        chips
-        deletable-chips
-        max-height="400"
-        hint="Välj taggar"
-        persistent-hint>
-      </v-autocomplete>
+        :selectedArray="selectedTags"
+        :itemTextProp="'name'"
+        :hint="'Välj taggar'"
+        :type="'tag'"
+        :multiple="true"
+      />
+    </v-flex>
+    <v-flex xs12 sm6 md4>
+      <Picker 
+        :label="'Fotograf'"
+        :items="photographers"
+        :selectedArray="selectedPhotographers"
+        :itemTextProp="'fName'"
+        :hint="'Välj fotograf'"
+        :type="'photographer'"
+        :multiple="true"
+      />
     </v-flex>
   </v-layout>
 </v-container>
@@ -53,8 +60,11 @@
 <script>
 // import _ from 'lodash';
 import { mapGetters } from 'vuex';
-
+import Picker from '@/components/Search/Picker';
 export default {
+  components: {
+    Picker,
+  },
   props: ['chipPressValue'],
   data() {
     return {
@@ -62,19 +72,20 @@ export default {
       searchString: '',
       dates: [],
       selectedTags: [],
+      selectedPhotographers: [],
     };
   },
   computed: {
     ...mapGetters([
       'tags',
+      'photographers',
     ]),
   },
 }
 </script>
 
 <style scoped>
-
 /* /deep/[role="combobox"] {
-  padding-bottom: 10px;
+  padding-bottom: 15px;
 } */
 </style>

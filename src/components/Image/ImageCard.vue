@@ -11,8 +11,10 @@
   </v-img>
 
   <v-card-actions>
-    <v-btn text>Läs mer</v-btn>
-    <v-btn text>Hämta</v-btn>
+    <v-btn text
+      :to="'/' + image.id">Läs mer</v-btn>
+    <v-btn text
+      @click="downloadImage">Hämta</v-btn>
     <v-spacer></v-spacer>
 
     <v-chip v-for="tag in tags" :key="tag.id" class="mr-1 ml-1">
@@ -53,6 +55,11 @@ export default {
       // },
     ],
   }),
+  methods: {
+    downloadImage() {
+      console.log('download');
+    },
+  },
 };
 </script>
 
