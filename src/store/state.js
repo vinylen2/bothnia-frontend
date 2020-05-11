@@ -6,6 +6,7 @@ export const state = {
   user: {
     token: true,
   },
+  images: [],
   photographers: [],
   tags: [],
 };

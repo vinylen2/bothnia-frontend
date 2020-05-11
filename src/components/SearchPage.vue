@@ -29,10 +29,12 @@ export default {
   computed: {
     ...mapGetters([
       'isLoggedIn',
+      'images',
     ]),
     ...mapActions([
       'getPhotographers',
       'getTags',
+      'getAllImages',
     ])
   },
   created() {
@@ -41,31 +43,9 @@ export default {
     }
     this.getPhotographers;
     this.getTags;
+    this.getAllImages;
   },
   data: () => ({
-    images: [
-      {
-        id: 0,
-        name: 'Liggande älg',
-        photographer: 'Hans Eriksson',
-        date: '2020-05-10',
-        imagePath: 'http://mssjakt.se/wp-content/uploads/sites/571/2018/05/moose-moose-rack-male-bull-76972.jpeg',
-      },
-      {
-        id: 1,
-        name: 'Liggande älg',
-        photographer: 'Hans Eriksson',
-        date: '2020-05-10',
-        imagePath: 'http://mssjakt.se/wp-content/uploads/sites/571/2018/05/moose-moose-rack-male-bull-76972.jpeg',
-      },
-      {
-        id: 2,
-        name: 'Liggande älg',
-        photographer: 'Hans Eriksson',
-        date: '2020-05-10',
-        imagePath: 'http://mssjakt.se/wp-content/uploads/sites/571/2018/05/moose-moose-rack-male-bull-76972.jpeg',
-      },
-    ],
   }),
 };
 </script>

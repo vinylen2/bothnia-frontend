@@ -123,16 +123,21 @@ export default {
       this.firstname = '';
       this.lastname = '';
     },
+    checkContent(data) {
+      if (typeof data === 'undefined') {
+        return false
+      } return true
+    },
     extractMetaData() {
       let fr = new FileReader();
       fr.readAsArrayBuffer(this.image);
       fr.onload = () => {
         const tags = ExifReader.load(fr.result);
-        this.metadata.GPSLongitude = (typeof tags.GPSLongitude.description === 'undefined') ?  null : tags.GPSLongitude.description;
-        // this.metadata.GPSLatitude ? tags.GPSLatitude.description : null;
-        // this.metadata.Model ? tags.Model.description : null;
-        // this.metadata.ImageHeight ? tags['Image Height'].value : null;
-        // this.metadata.ImageWidth ? tags['Image Width'].value : null;
+        this.metadata.GPSLongitude = this.checkContent(tags.GPSLongitude) ? tags.GPSLongitude.description : null;
+        this.metadata.GPSLatitude = this.checkContent(tags.GPSLatitude) ? tags.GPSLatitude.description : null;
+        this.metadata.Model = this.checkContent(tags.Model) ? tags.Model.description : null;
+        this.metadata.ImageHeight = this.checkContent(tags['Image Height']) ? tags['Image Height'].value : null;
+        this.metadata.ImageWidth = this.checkContent(tags['Image Width']) ? tags['Image Width'].value : null;
       };
     },
     uploadImage() {

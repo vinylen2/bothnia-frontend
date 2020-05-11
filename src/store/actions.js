@@ -1,6 +1,13 @@
 // import _ from 'lodash';
   /* eslint-disable no-unused-vars */
 import api from './api';
+import qs from 'qs';
+
+const config = {
+  headers: {
+    'Content-Type': 'application/json',
+  },
+};
 
 export const actions = {
   auth({state}, payload) {
@@ -26,15 +33,23 @@ export const actions = {
       });
   },
   postTag({commit}, payload) {
-    api.post('/tag', {name: payload})
+    const data = JSON.stringify({ "name": payload });
+    api.post('/tag', data, config)
       .then((response) => {
         console.log(response);
       });
   },
   postPhotographer({commit}, payload) {
-    api.post('/photographer', payload)
+    const data = JSON.stringify(payload);
+    api.post('/photographer', data, config)
       .then((response) => {
         console.log(response);
+      });
+  },
+  getAllImages({commit}) {
+    api.get('/image')
+      .then((response) => {
+        commit('setImages', response.data);
       });
   },
 };

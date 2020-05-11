@@ -32,28 +32,11 @@ export default {
   props: ['image'],
   computed: {
     authorDate() {
-      return this.image.photographer + ', ' + this.image.date;
+      return this.image.photographer + ', ' + this.image.created;
     },
   },
   data: () => ({
-    tags: [
-      {
-        id: 0,
-        name: 'Djur',
-      },
-      // {
-      //   id: 1,
-      //   name: 'Skog',
-      // },
-      // {
-      //   id: 2,
-      //   name: 'Höst',
-      // },
-      // {
-      //   id: 3,
-      //   name: 'Natur',
-      // },
-    ],
+    tags: this.image.ImageTags,
   }),
   methods: {
     downloadImage() {
