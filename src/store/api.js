@@ -1,7 +1,9 @@
-import axios from 'axios';
-import { api } from '../../config.json';
+//import axios from 'axios';
+//import { api } from '../../config.json';
 
-export default axios.create({
-  baseURL: api,
+
+
+//export default axios.create({
+//  baseURL: api,
   // withCredentials: true,
-});
+//});

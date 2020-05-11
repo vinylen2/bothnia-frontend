@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import Home from '../components/Home.vue'
 import SearchPage from '../components/SearchPage.vue'
 import Profile from '../components/Profile/Profile.vue'
+import ImagePage from '../components/Image/ImagePage.vue'
 
 Vue.use(VueRouter)
 
@@ -21,6 +22,11 @@ Vue.use(VueRouter)
     path: '/profile',
     name: 'Profile',
     component: Profile
+  },
+  {
+    path: '/imagepage/:slug',
+    name: 'ImagePage',
+    component: ImagePage
   },
 ]
 

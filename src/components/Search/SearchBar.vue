@@ -74,7 +74,7 @@ export default {
 
 <style scoped>
 
-/deep/[role="combobox"] {
+/* /deep/[role="combobox"] {
   padding-bottom: 10px;
-}
+} */
 </style>
