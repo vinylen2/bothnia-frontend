@@ -1,4 +1,7 @@
 export const mutations = {
+  setUser: (state, payload) => {
+    state.user = payload;
+  },
   toggleDrawer: (state) => {
     state.nav.drawer = !state.nav.drawer;
   },

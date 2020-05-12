@@ -15,6 +15,8 @@ export const getters = {
     return state.nav.loginDialog;
   },
   isLoggedIn: (state) => {
-    return state.user.token;
+    if (state.user.id > 0) {
+      return true;
+    } return false;
   },
 };

@@ -57,7 +57,11 @@ export default {
   }),
   methods: {
     login() {
-      this.$store.dispatch('auth', {username: this.username, password: this.password})
+      this.$store.dispatch('auth', this.username)
+        .then(() => {
+        }, error => {
+          console.log(error);
+        });
     },
   },
 };

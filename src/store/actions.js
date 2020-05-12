@@ -10,14 +10,15 @@ const config = {
 };
 
 export const actions = {
-  auth({state}, payload) {
-    api.post('/auth/token', payload)
-      .then((response) => {
-        console.log(response.data);
-        console.log(state);
-      })
-      .catch((error) => {
-        console.log(error);
+  auth({commit}, username) {
+    return new Promise((resolve, reject) => {
+      api.get(`/user/${username}`)
+        .then((response) => {
+          commit('setUser', response.data);
+          commit('closeLoginDialog');
+        }, error => {
+          console.log(error);
+        });
       });
   },
   getPhotographers({commit}) {
@@ -45,7 +46,7 @@ export const actions = {
     })
   },
   postPhotographer({commit}, payload) {
-    const data = JSON.stringify(payload);
+    const data = JSON.stringify({ "name": payload });
     return new Promise((resolve, reject) => {
       api.post('/photographer', data, config)
         .then((response) => {

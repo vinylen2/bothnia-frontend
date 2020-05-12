@@ -4,7 +4,7 @@ export const state = {
     loginDialog: false,
   },
   user: {
-    token: true,
+    id: 1,
   },
   images: [],
   photographers: [],
