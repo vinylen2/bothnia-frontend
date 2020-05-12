@@ -18,6 +18,12 @@ export const mutations = {
   setTags: (state, payload) => {
     state.tags = payload;
   },
+  addTag: (state, payload) => {
+    state.tags.push(payload);
+  },
+  addPhotographer: (state, payload) => {
+    state.photographer.push(payload);
+  },
   // fix so this is a dynamic databinding
   setImages: (state, payload) => {
     state.images = payload;

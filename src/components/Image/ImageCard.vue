@@ -1,7 +1,7 @@
 <template>
 <v-card>
   <v-img
-    :src="image.imagePath"
+    :src="imageSrc"
     class="white--text align-end"
     gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
   >
@@ -18,7 +18,7 @@
     <v-spacer></v-spacer>
 
     <v-chip v-for="tag in tags" :key="tag.id" class="mr-1 ml-1">
-      {{tag.name}}
+      {{tag}}
     </v-chip>
     <div>
     </div>
@@ -27,16 +27,23 @@
 </template>
 
 <script>
+import moment from 'moment';
+
 export default {
   name: 'image-card',
   props: ['image'],
   computed: {
     authorDate() {
-      return this.image.photographer + ', ' + this.image.created;
+      return this.name + ', ' + moment(this.image.created).format('YYYY-MM-DD');
+    },
+    tags() {
+      return this.image.imageTags.map(tag => tag.tag.name);
+    },
+    imageSrc() {
+      return `http://94.237.89.244:7777/files/${this.image.id}.jpg`;
     },
   },
   data: () => ({
-    tags: this.image.ImageTags,
   }),
   methods: {
     downloadImage() {

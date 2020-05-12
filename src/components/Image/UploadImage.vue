@@ -17,6 +17,11 @@
           <v-container>
             <v-row>
               <v-col>
+
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col>
                 <v-file-input
                   label="Välj bild"
                   filled
@@ -44,7 +49,7 @@
                   :label="'Fotograf'"
                   :items="photographers"
                   :selectedArray="selectedPhotographers"
-                  :itemTextProp="'fName'"
+                  :itemTextProp="'name'"
                   :hint="'Välj fotograf'"
                   :type="'photographer'"
                   :append="true"
@@ -88,6 +93,7 @@ export default {
     selectedTags: [],
     selectedPhotographers: [],
     image: null,
+    base64: null,
     metadata: {
       GPSLatitude: '',
       GPSLongitude: '',
@@ -109,6 +115,7 @@ export default {
     image() {
       if (this.image) {
         this.extractMetaData();
+        this.convertToString();
       }
     },
   },
@@ -128,6 +135,13 @@ export default {
         return false
       } return true
     },
+    convertToString() {
+      let fr = new FileReader();
+      fr.readAsDataURL(this.image);
+      fr.onload = () => {
+        this.base64 = fr.result.replace('data:image/jpeg;base64,', '');
+      };
+    },
     extractMetaData() {
       let fr = new FileReader();
       fr.readAsArrayBuffer(this.image);
@@ -141,6 +155,14 @@ export default {
       };
     },
     uploadImage() {
+      this.$store.dispatch('postImage', {name: 'test', base64: this.base64})
+        .then((result) => {
+          console.log(result);
+
+        }, error => {
+          console.log(error);
+
+        });
 
     },
   },

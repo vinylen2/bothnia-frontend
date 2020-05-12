@@ -47,7 +47,7 @@
         :label="'Fotograf'"
         :items="photographers"
         :selectedArray="selectedPhotographers"
-        :itemTextProp="'fName'"
+        :itemTextProp="'name'"
         :hint="'Välj fotograf'"
         :type="'photographer'"
         :multiple="true"

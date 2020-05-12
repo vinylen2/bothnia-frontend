@@ -1,79 +1,13 @@
 <template>
 <div>
-  <v-icon @click="addDialog = true">
-    mdi-plus
-  </v-icon>
-  <v-dialog v-model="addDialog">
-    <v-card >
-      <v-card-title>
-        <span class="heading">
-          Lägg till {{title}}
-        </span>
-      </v-card-title>
-      <v-card-text>
-        <v-form
-          ref="form"
-          lazy-validation
-          @submit.prevent="post"
-        >
-        <div v-if="type === 'tag'">
-          <v-text-field
-            v-model="data"
-            :rules="rules"
-            :label="'Skriv in ' + title"
-            required
-          ></v-text-field>
-        </div>
-        <div v-if="type === 'photographer'">
-          <v-row>
-            <v-col cols="6">
-              <v-text-field
-                v-model="photographer.fName"
-                :rules="rules"
-                label="Förnamn"
-                required
-              ></v-text-field>
-            </v-col>
-            <v-col cols="6">
-              <v-text-field
-                v-model="photographer.lName"
-                :rules="rules"
-                label="Efternamn"
-                required
-              ></v-text-field>
-            </v-col>
-          </v-row>
-          <v-row>
-            <v-col cols="6">
-              <v-text-field
-                v-model="photographer.email"
-                :rules="rules"
-                label="Epost"
-                required
-              ></v-text-field>
-            </v-col>
-            <v-col cols="6">
-              <v-text-field
-                v-model="photographer.phone"
-                :rules="rules"
-                label="Telefon"
-                required
-              ></v-text-field>
-            </v-col>
-          </v-row>
-        </div>
-          <v-btn
-            submit
-            color="teal lighten-2"
-            class="mr-4"
-            type="submit"
-          >
-          Lägg till
-          </v-btn>
-        </v-form>
-      </v-card-text>
-    </v-card>
-  </v-dialog>
+  <v-row class="pl-8">
+    <v-col cols="10" align="center" class="pa-0">
+      <v-btn text @click="post">
+        <span>Lägg till {{searchInput}}</span>
+        <v-icon>mdi-plus</v-icon>
+      </v-btn>
+    </v-col>
+  </v-row>
 </div>
 </template>
 
@@ -81,7 +15,7 @@
 import { mapActions } from 'vuex';
 
 export default {
-  props: ['type'],
+  props: ['type', 'searchInput'],
   data: () => ({
     addDialog: false,
     tag: '',
@@ -115,10 +49,20 @@ export default {
     post() {
       switch (this.type) {
         case 'tag':
-          this.$store.dispatch('postTag', this.tag);
+          this.$store.dispatch('postTag', this.searchInput)
+            .then((response) => {
+              this.$emit('addedItem', response.id);
+            }, error => {
+              console.log(error);
+            });
           break;
         case 'photographer':
-          this.$store.dispatch('postPhotographer', this.photographer);
+          this.$store.dispatch('postPhotographer', this.searchInput)
+            .then((response) => {
+              this.$emit('addedItem', response.id);
+            }, error => {
+              console.log(error);
+            });
           break;
       }
     },

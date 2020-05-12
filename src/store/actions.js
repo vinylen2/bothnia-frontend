@@ -34,22 +34,45 @@ export const actions = {
   },
   postTag({commit}, payload) {
     const data = JSON.stringify({ "name": payload });
-    api.post('/tag', data, config)
-      .then((response) => {
-        console.log(response);
-      });
+    return new Promise((resolve, reject) => {
+      api.post('/tag', data, config)
+        .then((response) => {
+          commit('addTag', response.data);
+          resolve(response.data);
+        }, error => {
+          reject(error);
+        })
+    })
   },
   postPhotographer({commit}, payload) {
     const data = JSON.stringify(payload);
-    api.post('/photographer', data, config)
-      .then((response) => {
-        console.log(response);
-      });
+    return new Promise((resolve, reject) => {
+      api.post('/photographer', data, config)
+        .then((response) => {
+          commit('addPhotographer', response.data);
+          resolve(response.data);
+        }, error => {
+          reject(error);
+        })
+    })
   },
   getAllImages({commit}) {
     api.get('/image')
       .then((response) => {
         commit('setImages', response.data);
       });
+  },
+  postImage({commit}, payload) {
+    const data = JSON.stringify(payload);
+    return new Promise((resolve, reject) => {
+      api.post('/photo', data, config)
+        .then((response) => {
+          resolve(response.data);
+        }, error => {
+          console.log(error);
+          reject(error);
+        })
+    })
+
   },
 };

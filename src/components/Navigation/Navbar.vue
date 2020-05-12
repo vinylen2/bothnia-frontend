@@ -49,5 +49,10 @@ export default {
       'isLoggedIn',
     ]),
   },
+  methods: {
+    closeDialog() {
+
+    },
+  },
 };
 </script>
