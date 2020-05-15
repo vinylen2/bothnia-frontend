@@ -17,7 +17,7 @@
       @click="downloadImage">Hämta</v-btn>
     <v-spacer></v-spacer>
 
-    <v-chip v-for="tag in tags" :key="tag.id" class="mr-1 ml-1">
+    <v-chip v-for="tag in image.tags" :key="tag" class="mr-1 ml-1">
       {{tag}}
     </v-chip>
     <div>
@@ -34,7 +34,7 @@ export default {
   props: ['image'],
   computed: {
     authorDate() {
-      return this.name + ', ' + moment(this.image.created).format('YYYY-MM-DD');
+      return this.image.photographer.name + ', ' + moment(this.image.created).format('YYYY-MM-DD');
     },
     tags() {
       return this.image.imageTags.map(tag => tag.tag.name);

@@ -1,7 +1,7 @@
 <template>
 <v-container grid-list-md text-xs-left class="white--text">
-  <v-layout row wrap>
-    <v-flex xs12>
+  <v-row>
+    <v-col cols="12" md="6" class="pb-0">
       <v-text-field
         light
         prepend-icon="mdi-magnify"
@@ -12,26 +12,42 @@
         placeholder="Sök"
         style="max-width: 500px; min-width: 128px border-radius: 25%">
       </v-text-field>
-    </v-flex>
-    <v-flex xs12 sm6 md4>
+    </v-col>
+    <v-col cols="6" md="3">
       <v-menu ref="menu"
-        v-model="menu">
+        v-model="startDateModal">
           <template v-slot:activator="{ on }">
             <v-combobox
-              v-model="dates"
-              multiple
+              v-model="startDate"
               chips
-              small-chips
               prepend-icon="mdi-calendar"
-              label="Välj datumintervall"
+              label="Välj startdatum"
               readonly
               v-on="on"
             ></v-combobox>
           </template>
-          <v-date-picker v-model="dates" range></v-date-picker>
+          <v-date-picker v-model="startDate"></v-date-picker>
       </v-menu>
-    </v-flex>
-    <v-flex xs12 sm6 md4>
+    </v-col>
+    <v-col cols="6" md="3">
+      <v-menu ref="menu"
+        v-model="endDateModal">
+          <template v-slot:activator="{ on }">
+            <v-combobox
+              v-model="endDate"
+              chips
+              prepend-icon="mdi-calendar"
+              label="Välj slutdatum"
+              readonly
+              v-on="on"
+            ></v-combobox>
+          </template>
+          <v-date-picker v-model="endDate"></v-date-picker>
+      </v-menu>
+    </v-col>
+  </v-row>
+  <v-row class="pt-0">
+    <v-col cols="12" md="6" class="pt-0">
       <Picker 
         :label="'Taggar'"
         :items="tags"
@@ -41,8 +57,8 @@
         :type="'tag'"
         :multiple="true"
       />
-    </v-flex>
-    <v-flex xs12 sm6 md4>
+    </v-col>
+    <v-col cols="12" md="6" class="pt-0">
       <Picker 
         :label="'Fotograf'"
         :items="photographers"
@@ -52,8 +68,8 @@
         :type="'photographer'"
         :multiple="true"
       />
-    </v-flex>
-  </v-layout>
+    </v-col>
+  </v-row>
 </v-container>
 </template>
 
@@ -69,7 +85,10 @@ export default {
   props: ['chipPressValue'],
   data() {
     return {
-      menu: false,
+      startDateModal: false,
+      endDateModal: false,
+      startDate: '',
+      endDate: '',
       searchString: '',
       dates: [],
       selectedTags: [],

@@ -32,6 +32,48 @@
               </v-col>
             </v-row>
             <v-row>
+              <v-col cols="6" md="4">
+                <v-text-field
+                  label="Bredd"
+                  disabled
+                  v-model="metadata.ImageWidth"
+                  :rules="rules">
+
+                </v-text-field>
+              </v-col>
+              <v-col cols="6" md="4">
+                <v-text-field
+                  label="Höjd"
+                  disabled
+                  v-model="metadata.ImageHeight"
+                  :rules="rules">
+
+                </v-text-field>
+              </v-col>
+              <v-col cols="6" md="4">
+                <v-text-field
+                  label="Modell"
+                  v-model="metadata.Model">
+
+                </v-text-field>
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col cols="6" md="6">
+                <v-text-field
+                  label="Plats">
+
+                </v-text-field>
+              </v-col>
+              <v-col cols="6" md="6">
+                <v-text-field
+                  label="Datum för foto"
+                  :rules="rules">
+
+                </v-text-field>
+              </v-col>
+            </v-row>
+            <v-row>
               <v-col cols="6">
                 <Picker 
                   :label="'Taggar'"
@@ -55,9 +97,6 @@
                   :append="true"
                   :multiple="false"
                 />
-              </v-col>
-              <v-col cols="6">
-                {{metadata}}
               </v-col>
             </v-row>
             <v-row justify="center">

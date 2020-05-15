@@ -39,6 +39,7 @@
       >
       logga in
       </v-btn>
+      <span>Glömt lösenord?</span>
     </v-form>
   </v-card-text>
 </v-card>
