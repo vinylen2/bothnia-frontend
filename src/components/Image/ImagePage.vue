@@ -13,7 +13,7 @@
    </v-row>
       
    <v-row v-if="info.description !== null">
-         <div>'Beskrivning:' +{{space}}</div><div class="text--primary">{{info.description}}</div>
+         <div>Beskrivning: {{space}}</div><div class="text--primary">{{info.description}}</div>
    </v-row>
    <v-row v-if="authorDate!== null">
          <div>Skapad: </div><div class="text--primary"> {{authorDate}}</div>
