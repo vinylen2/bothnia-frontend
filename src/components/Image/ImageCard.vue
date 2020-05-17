@@ -11,7 +11,7 @@
   </v-img>
 
   <v-card-actions>
-    <router-link v-bind:to="'/imagepage/' + image.id"> <v-btn text>
+    <router-link style="text-decoration: none; color: inherit;" v-bind:to="'/imagepage/' + image.id"> <v-btn text>
    Läs mer
    </v-btn>
       </router-link>
