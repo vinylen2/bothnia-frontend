@@ -29,7 +29,7 @@
         <div class="text--primary">{{info.gpsLongitude}}</div>
       </v-row>
       <v-row v-if="info.cameraModel !== null">
-        <div>Kameramodell:</div>
+        <div class="pr-1">Kameramodell:</div>
         <div class="text--primary">{{info.cameraModel}}</div>
       </v-row>
       <v-row v-if="info.imageWidth !== null">
@@ -41,7 +41,7 @@
         <div class="text--primary">{{info.imageHeight}}</div>
       </v-row>
       <v-row v-if="info.captured !== null">
-        <div>Fångad:</div>
+        <div class="pr-1">Fångad:</div>
         <div class="text--primary">{{info.captured}}</div>
       </v-row>
       <v-row v-if="info.resolution !== null">
