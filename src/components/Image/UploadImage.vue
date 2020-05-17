@@ -17,11 +17,6 @@
           <v-container>
             <v-row>
               <v-col>
-
-              </v-col>
-            </v-row>
-            <v-row>
-              <v-col>
                 <v-file-input
                   label="Välj bild"
                   filled
@@ -32,7 +27,25 @@
               </v-col>
             </v-row>
             <v-row>
-              <v-col cols="6" md="4">
+              <v-col>
+                <v-text-field
+                  label="Titel"
+                  v-model="imageName"
+                  :rules="rules">
+                </v-text-field>
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col>
+                <v-text-field
+                  label="Beskrivning"
+                  v-model="imageDescription"
+                  :rules="rules">
+                </v-text-field>
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col md="4">
                 <v-text-field
                   label="Bredd"
                   disabled
@@ -41,7 +54,7 @@
 
                 </v-text-field>
               </v-col>
-              <v-col cols="6" md="4">
+              <v-col md="4">
                 <v-text-field
                   label="Höjd"
                   disabled
@@ -50,7 +63,7 @@
 
                 </v-text-field>
               </v-col>
-              <v-col cols="6" md="4">
+              <v-col md="4">
                 <v-text-field
                   label="Modell"
                   v-model="metadata.Model">
@@ -61,21 +74,32 @@
             <v-row>
               <v-col cols="6" md="6">
                 <v-text-field
+                  v-model="location"
                   label="Plats">
 
                 </v-text-field>
               </v-col>
               <v-col cols="6" md="6">
-                <v-text-field
-                  label="Datum för foto"
-                  :rules="rules">
-
-                </v-text-field>
+                <v-menu ref="menu"
+                  v-model="dateModal">
+                    <template v-slot:activator="{ on }">
+                      <v-combobox
+                        v-model="metadata.DateTime"
+                        chips
+                        deletable-chips
+                        prepend-icon="mdi-calendar"
+                        label="Datum"
+                        v-on="on"
+                      ></v-combobox>
+                    </template>
+                    <v-date-picker v-model="metadata.DateTime"></v-date-picker>
+                </v-menu>
               </v-col>
             </v-row>
             <v-row>
               <v-col cols="6">
                 <Picker 
+                  :publish="uploadPress"
                   :label="'Taggar'"
                   :items="tags"
                   :selectedArray="selectedTags"
@@ -88,6 +112,7 @@
               </v-col>
               <v-col cols="6">
                 <Picker 
+                  :publish="uploadPress"
                   :label="'Fotograf'"
                   :items="photographers"
                   :selectedArray="selectedPhotographers"
@@ -114,6 +139,8 @@
 <script>
   /* eslint-disable no-unused-vars */
 import { mapGetters } from 'vuex';
+import axios from 'axios';
+import moment from 'moment';
 import Picker from '@/components/Search/Picker';
 
 import ExifReader from 'exifreader';
@@ -124,22 +151,24 @@ export default {
     Picker,
   },
   data: () => ({
-    uploadDialog: false,
+    dateModal: false,
+    uploadPress: false,
+    uploadDialog: true,
     valid: false,
     rules: [
       v => !!v || 'Fältet måste fyllas i',
     ],
-    selectedTags: [],
-    selectedPhotographers: [],
     image: null,
-    base64: null,
+    imageDescription: null,
+    imageName: '',
+    location: null,
     metadata: {
-      GPSLatitude: '',
-      GPSLongitude: '',
-      Model: '',
-      ImageWidth: '',
-      ImageHeight: '',
-      DateTime: '',
+      GPSLatitude: null,
+      GPSLongitude: null,
+      Model: null,
+      ImageWidth: null,
+      ImageHeight: null,
+      DateTime: null,
     },
   }),
   computed: {
@@ -148,13 +177,20 @@ export default {
       'token',
       'tags',
       'photographers',
+      'selectedPhotographers',
+      'selectedTags',
     ]),
+    formattedSelectedTags() {
+      if (this.selectedTags) {
+        return this.selectedTags.split(';');
+      } return null;
+
+    },
   },
   watch: {
     image() {
       if (this.image) {
         this.extractMetaData();
-        this.convertToString();
       }
     },
   },
@@ -191,18 +227,55 @@ export default {
         this.metadata.Model = this.checkContent(tags.Model) ? tags.Model.description : null;
         this.metadata.ImageHeight = this.checkContent(tags['Image Height']) ? tags['Image Height'].value : null;
         this.metadata.ImageWidth = this.checkContent(tags['Image Width']) ? tags['Image Width'].value : null;
+        if (this.metadata.GPSLatitude && this.metadata.GPSLongitude) {
+          this.getLocation();
+        }
       };
     },
-    uploadImage() {
-      this.$store.dispatch('postImage', {name: 'test', base64: this.base64})
-        .then((result) => {
-          console.log(result);
+    getLocation() {
+      let api = axios.create({
+        baseURL: 'https://api.opencagedata.com/geocode/v1/',
+      });
 
+      api.get(`json?key=93a9ae286a274a9598da43871615df2a&q=${this.metadata.GPSLatitude},${this.metadata.GPSLongitude}`)
+        .then((result) => {
+          if (result.data.results.length > 0) {
+            this.location = `${result.data.results[0].components.country}, ${result.data.results[0].components.county}`
+          }
+        });
+    },
+    uploadImage() {
+      this.uploadPress = true;
+      let date = moment(this.metadata.DateTime).format();
+      setTimeout(() => {
+        this.$store.dispatch('postImage', {
+          name: this.imageName,
+          description: this.imageDescription,
+          captured: date,
+          gpsLatitude: this.metadata.GPSLatitude.toString(),
+          gpsLongitude: this.metadata.GPSLongitude.toString(),
+          cameraModel: this.metadata.Model,
+          imageWidth: this.imageWidth,
+          imageHeight: this.imageHeight,
+          tags: this.formattedSelectedTags,
+          photographer: {id: this.selectedPhotographers},
+        })
+          .then((result) => {
+            this.uploadImageData(result.id);
+          }, error => {
+            this.$store.commit('errorSnackbar', 'Det gick inte att ladda upp bilden.');
+          });
+        }, 100);
+    },
+    uploadImageData(id) {
+      let formData = new FormData();
+      formData.append('file', this.image)
+      this.$store.dispatch('uploadImage', {formData: formData, id})
+        .then((result) => {
+          this.$store.commit('successSnackbar', 'Din bild är nu uppladdad!');
         }, error => {
           console.log(error);
-
         });
-
     },
   },
 };

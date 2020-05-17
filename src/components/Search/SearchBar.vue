@@ -4,11 +4,12 @@
     <v-col cols="12" md="6" class="pb-0">
       <v-text-field
         light
-        prepend-icon="mdi-magnify"
+        append-outer-icon="mdi-magnify"
+        @click:append-outer="search"
         clearable
         @cleared="console.log('cleard')"
         hide-details
-        v-model="searchString"
+        v-model="imageName"
         placeholder="Sök"
         style="max-width: 500px; min-width: 128px border-radius: 25%">
       </v-text-field>
@@ -20,9 +21,9 @@
             <v-combobox
               v-model="startDate"
               chips
+              deletable-chips
               prepend-icon="mdi-calendar"
               label="Välj startdatum"
-              readonly
               v-on="on"
             ></v-combobox>
           </template>
@@ -36,9 +37,9 @@
             <v-combobox
               v-model="endDate"
               chips
+              deletable-chips
               prepend-icon="mdi-calendar"
               label="Välj slutdatum"
-              readonly
               v-on="on"
             ></v-combobox>
           </template>
@@ -49,9 +50,9 @@
   <v-row class="pt-0">
     <v-col cols="12" md="6" class="pt-0">
       <Picker 
+        :publish="searchPress"
         :label="'Taggar'"
         :items="tags"
-        :selectedArray="selectedTags"
         :itemTextProp="'name'"
         :hint="'Välj taggar'"
         :type="'tag'"
@@ -60,13 +61,13 @@
     </v-col>
     <v-col cols="12" md="6" class="pt-0">
       <Picker 
+        :publish="searchPress"
         :label="'Fotograf'"
         :items="photographers"
-        :selectedArray="selectedPhotographers"
         :itemTextProp="'name'"
         :hint="'Välj fotograf'"
         :type="'photographer'"
-        :multiple="true"
+        :multiple="false"
       />
     </v-col>
   </v-row>
@@ -75,7 +76,7 @@
 
 <script>
 // import _ from 'lodash';
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 import Picker from '@/components/Search/Picker';
 
 export default {
@@ -85,21 +86,52 @@ export default {
   props: ['chipPressValue'],
   data() {
     return {
+      searchPress: false,
       startDateModal: false,
       endDateModal: false,
-      startDate: '',
-      endDate: '',
-      searchString: '',
+      startDate: null,
+      endDate: null,
+      imageName: null,
       dates: [],
-      selectedTags: [],
-      selectedPhotographers: [],
     };
   },
   computed: {
     ...mapGetters([
       'tags',
       'photographers',
+      'selectedPhotographers',
+      'selectedTags',
     ]),
+    ...mapActions([
+      'getPhotographers',
+      'getTags',
+      'getAllImages',
+    ])
+  },
+  created() {
+    this.getPhotographers;
+    this.getTags;
+    this.getAllImages;
+  },
+  methods: {
+    search() {
+      this.searchPress = true;
+      setTimeout(() => {
+        this.$store.dispatch('searchImages', {
+          imageName: this.imageName,
+          startDate: this.startDate,
+          endDate: this.endDate,
+          tags: this.selectedTags,
+          photographerId: this.selectedPhotographers,
+        })
+          .then(() => {
+            this.searchPress = false;
+            this.$store.commit('eraseSelected');
+          }, () => {
+            this.$store.commit('errorSnackbar', 'Sökningen gick inte att genomföra');
+          });
+      }, 100);
+    },
   },
 }
 </script>

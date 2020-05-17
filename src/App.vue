@@ -6,6 +6,12 @@
       <Login />
     </v-dialog>
     <v-content>
+      <v-snackbar
+        :timeout="snackbar.timeout"
+        :color="snackbar.color"
+        v-model="snackbar.status"
+      > {{snackbar.value}}
+      </v-snackbar>
       <router-view/>
     </v-content>
   </v-app>
@@ -27,6 +33,7 @@ export default {
   computed: {
     ...mapGetters([
       'loginDialog',
+      'snackbar',
     ]),
   },
 };

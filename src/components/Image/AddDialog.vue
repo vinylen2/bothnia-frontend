@@ -51,7 +51,7 @@ export default {
         case 'tag':
           this.$store.dispatch('postTag', this.searchInput)
             .then((response) => {
-              this.$emit('addedItem', response.id);
+              this.$emit('addedItem', { type: 'tag', id: response.id });
             }, error => {
               console.log(error);
             });
@@ -59,7 +59,7 @@ export default {
         case 'photographer':
           this.$store.dispatch('postPhotographer', this.searchInput)
             .then((response) => {
-              this.$emit('addedItem', response.id);
+              this.$emit('addedItem', { type: 'photographer', id: response.id });
             }, error => {
               console.log(error);
             });

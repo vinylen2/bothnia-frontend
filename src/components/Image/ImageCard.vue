@@ -12,9 +12,8 @@
 
   <v-card-actions>
     <v-btn text
-      :to="'/' + image.id">Läs mer</v-btn>
-    <v-btn text
-      @click="downloadImage">Hämta</v-btn>
+      :to="'/imagepage/' + image.id">Läs mer</v-btn>
+    <v-btn :href="imageSrc" download text target="_blank">Hämta</v-btn>
     <v-spacer></v-spacer>
 
     <v-chip v-for="tag in image.tags" :key="tag" class="mr-1 ml-1">

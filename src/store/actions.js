@@ -66,7 +66,7 @@ export const actions = {
   postImage({commit}, payload) {
     const data = JSON.stringify(payload);
     return new Promise((resolve, reject) => {
-      api.post('/photo', data, config)
+      api.post('/image', data, config)
         .then((response) => {
           resolve(response.data);
         }, error => {
@@ -74,6 +74,36 @@ export const actions = {
           reject(error);
         })
     })
+  },
+  uploadImage({commit}, payload) {
+    let configMulti = {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    };
+    return new Promise((resolve, reject) => {
+      api.post(`/upload/${payload.id}`, payload.formData, configMulti)
+        .then((response) => {
+          resolve(response.data);
+        }, error => {
+          console.log(error);
+          reject(error);
+        })
+    })
+  },
+  searchImages({commit}, payload) {
+    return new Promise((resolve, reject) => {
+      api.get('/image/search', {
+        params: payload,
+      })
+        .then((response) => {
+          commit('setImages', response.data);
+          resolve(response.data);
+        }, error => {
+          reject(error);
+        })
+    }, error => {
 
+    });
   },
 };

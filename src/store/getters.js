@@ -19,4 +19,13 @@ export const getters = {
       return true;
     } return false;
   },
+  selectedTags: (state) => {
+    return state.selectedTags;
+  },
+  selectedPhotographers: (state) => {
+    return state.selectedPhotographers;
+  },
+  snackbar: (state) => {
+    return state.snackbar;
+  },
 };
