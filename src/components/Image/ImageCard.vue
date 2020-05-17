@@ -11,8 +11,9 @@
   </v-img>
 
   <v-card-actions>
-    <v-btn text
-      :to="'/' + image.id">Läs mer</v-btn>
+    <router-link v-bind:to="'/imagepage/' + image.id"> 
+   Läs mer
+      </router-link>
     <v-btn text
       @click="downloadImage">Hämta</v-btn>
     <v-spacer></v-spacer>
