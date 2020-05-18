@@ -42,7 +42,7 @@
       </v-row>
       <v-row v-if="info.captured !== null">
         <div class="pr-1">Fångad:</div>
-        <div class="text--primary">{{info.captured}}</div>
+        <div class="text--primary">{{capturedDate}}</div>
       </v-row>
       <v-row v-if="info.resolution !== null">
         <div class="pr-1">Resolution:</div>
@@ -77,6 +77,9 @@ export default {
     },
     authorDate() {
       return moment(this.info.created).format("YYYY-MM-DD");
+    },
+    capturedDate() {
+      return moment(this.info.captured).format("YYYY-MM-DD");
     }
   },
 
