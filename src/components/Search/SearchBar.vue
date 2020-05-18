@@ -128,6 +128,7 @@ export default {
             this.searchPress = false;
             this.$store.commit('eraseSelected');
           }, () => {
+            this.searchPress = false;
             this.$store.commit('errorSnackbar', 'Sökningen gick inte att genomföra');
           });
       }, 100);

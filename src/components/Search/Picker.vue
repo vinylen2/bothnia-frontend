@@ -1,6 +1,7 @@
 <template>
+<v-form ref="form2" v-model="valid">
   <v-autocomplete v-if="append && type === 'tag'"
-    append-outer-icon
+    prepend-icon="mdi-tag"
     :label="label"
     v-model="selectedArray"
     :items="items"
@@ -28,7 +29,9 @@
     :items="items"
     :item-text="itemTextProp"
     :hint="hint"
+    prepend-icon="mdi-account"
     :item-value="'id'"
+    :rules="rules"
     :multiple="multiple"
     :search-input.sync="searchInput"
     chips
@@ -46,6 +49,7 @@
   </v-autocomplete>
   <v-autocomplete v-else-if="type === 'photographer'"
     :label="label"
+    prepend-icon="mdi-account"
     v-model="selectedArray"
     :items="items"
     :item-text="itemTextProp"
@@ -60,6 +64,7 @@
   </v-autocomplete>
   <v-autocomplete v-else
     :label="label"
+    prepend-icon="mdi-tag"
     v-model="selectedArray"
     :items="items"
     :item-text="itemTextProp"
@@ -71,6 +76,7 @@
     max-height="400"
     persistent-hint>
   </v-autocomplete>
+</v-form>
 </template>
 
 <script>
@@ -81,10 +87,14 @@ export default {
     AddDialog,
   },
   name: 'picker',
-  props: ['publish','label', 'items', 'hint', 'itemTextProp', 'append', 'type', 'multiple'],
+  props: ['publish','label', 'items', 'hint', 'itemTextProp', 'append', 'type', 'multiple', 'add'],
   data: () => ({
+    valid: false,
     searchInput: null,
     selectedArray: [],
+    rules: [
+      v => (typeof(v) !== 'object') || 'Fältet måste fyllas i',
+    ],
   }),
   computed: {
     computedSelected() {
@@ -103,6 +113,9 @@ export default {
           data: this.computedSelected,
         });
       } 
+    },
+    add() {
+      this.$refs.form2.validate();
     },
   },
   methods: {

@@ -5,7 +5,7 @@
     @click="uploadDialog = true">
     <v-icon>mdi-image-plus</v-icon>
   </v-btn>
-  <v-dialog v-model="uploadDialog">
+  <v-dialog v-model="uploadDialog" persistent>
     <v-card>
       <v-card-title>
         <span class="headline">
@@ -20,6 +20,7 @@
                 <v-file-input
                   label="Välj bild"
                   filled
+                  :rules="rules"
                   v-model="image"
                   accept=".jpg, .jpeg"
                   prepend-icon="mdi-camera">
@@ -30,6 +31,7 @@
               <v-col>
                 <v-text-field
                   label="Titel"
+                  prepend-icon="mdi-format-title"
                   v-model="imageName"
                   :rules="rules">
                 </v-text-field>
@@ -39,6 +41,7 @@
               <v-col>
                 <v-text-field
                   label="Beskrivning"
+                  prepend-icon="mdi-pencil"
                   v-model="imageDescription"
                   :rules="rules">
                 </v-text-field>
@@ -49,6 +52,7 @@
                 <v-text-field
                   label="Bredd"
                   disabled
+                  prepend-icon="mdi-arrow-split-vertical"
                   v-model="metadata.ImageWidth">
 
                 </v-text-field>
@@ -57,6 +61,7 @@
                 <v-text-field
                   label="Höjd"
                   disabled
+                  prepend-icon="mdi-arrow-split-horizontal"
                   v-model="metadata.ImageHeight">
 
                 </v-text-field>
@@ -64,6 +69,7 @@
               <v-col md="4">
                 <v-text-field
                   label="Modell"
+                  prepend-icon="mdi-camera-plus"
                   v-model="metadata.Model">
 
                 </v-text-field>
@@ -73,6 +79,7 @@
               <v-col cols="6" md="6">
                 <v-text-field
                   v-model="location"
+                  prepend-icon="mdi-map-marker"
                   label="Plats">
 
                 </v-text-field>
@@ -114,6 +121,7 @@
                   :publish="uploadPress"
                   :label="'Fotograf'"
                   :items="photographers"
+                  :add="validate"
                   :selectedArray="selectedPhotographers"
                   :itemTextProp="'name'"
                   :hint="'Välj fotograf'"
@@ -154,6 +162,7 @@ export default {
     uploadPress: false,
     uploadDialog: false,
     valid: false,
+    validate: false,
     rules: [
       v => !!v || 'Fältet måste fyllas i',
     ],
@@ -246,6 +255,7 @@ export default {
         });
     },
     uploadImage() {
+      this.validate = true;
       if (this.$refs.form.validate()) {
         this.uploadPress = true;
         let date = moment(this.metadata.DateTime).format();
@@ -258,14 +268,18 @@ export default {
             gpsLatitude: this.formattedGps(this.metadata.GPSLatitude),
             gpsLongitude: this.formattedGps(this.metadata.GPSLongitude),
             cameraModel: this.metadata.Model,
-            imageWidth: this.imageWidth,
-            imageHeight: this.imageHeight,
+            imageWidth: this.formattedGps(this.metadata.ImageWidth),
+            imageHeight: this.formattedGps(this.metadata.ImageHeight),
             tags: this.formattedSelectedTags,
             photographer: {id: this.selectedPhotographers},
           })
             .then((result) => {
+              this.uploadPress = false;
+              this.validate = false;
               this.uploadImageData(result.id);
             }, error => {
+              this.uploadPress = false;
+              this.validate = false;
               this.$store.commit('errorSnackbar', 'Det gick inte att ladda upp bilden.');
             });
           }, 100);

@@ -68,6 +68,8 @@ export const actions = {
     return new Promise((resolve, reject) => {
       api.post('/image', data, config)
         .then((response) => {
+          console.log(response);
+          commit('addImage', response.data);
           resolve(response.data);
         }, error => {
           console.log(error);

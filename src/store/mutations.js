@@ -27,7 +27,9 @@ export const mutations = {
   addPhotographer: (state, payload) => {
     state.photographers.push(payload);
   },
-  // fix so this is a dynamic databinding
+  addImage: (state, payload) => {
+    state.images.push(payload);
+  },
   setImages: (state, payload) => {
     state.images = payload;
   },

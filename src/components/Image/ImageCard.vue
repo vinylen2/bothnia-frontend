@@ -2,6 +2,7 @@
 <v-card>
   <v-img
     :src="imageSrc"
+    height="300px"
     class="white--text align-end"
     gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
   >
