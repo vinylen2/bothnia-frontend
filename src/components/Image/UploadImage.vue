@@ -13,7 +13,7 @@
         </span>
         </v-card-title>
       <v-card-text>
-        <v-form v-model="valid">
+        <v-form ref="form" v-model="valid">
           <v-container>
             <v-row>
               <v-col>
@@ -49,8 +49,7 @@
                 <v-text-field
                   label="Bredd"
                   disabled
-                  v-model="metadata.ImageWidth"
-                  :rules="rules">
+                  v-model="metadata.ImageWidth">
 
                 </v-text-field>
               </v-col>
@@ -58,8 +57,7 @@
                 <v-text-field
                   label="Höjd"
                   disabled
-                  v-model="metadata.ImageHeight"
-                  :rules="rules">
+                  v-model="metadata.ImageHeight">
 
                 </v-text-field>
               </v-col>
@@ -86,6 +84,7 @@
                       <v-combobox
                         v-model="metadata.DateTime"
                         chips
+                        :rules="rules"
                         deletable-chips
                         prepend-icon="mdi-calendar"
                         label="Datum"
@@ -153,7 +152,7 @@ export default {
   data: () => ({
     dateModal: false,
     uploadPress: false,
-    uploadDialog: true,
+    uploadDialog: false,
     valid: false,
     rules: [
       v => !!v || 'Fältet måste fyllas i',
@@ -184,7 +183,6 @@ export default {
       if (this.selectedTags) {
         return this.selectedTags.split(';');
       } return null;
-
     },
   },
   watch: {
@@ -196,6 +194,9 @@ export default {
   },
   methods: {
     /* eslint-disable no-console */
+    formattedGps(data) {
+      return data ? data.toString() : null;
+    },
     closeDialog() {
       this.uploadDialog = false;
       this.resetFields();
@@ -245,27 +246,30 @@ export default {
         });
     },
     uploadImage() {
-      this.uploadPress = true;
-      let date = moment(this.metadata.DateTime).format();
-      setTimeout(() => {
-        this.$store.dispatch('postImage', {
-          name: this.imageName,
-          description: this.imageDescription,
-          captured: date,
-          gpsLatitude: this.metadata.GPSLatitude.toString(),
-          gpsLongitude: this.metadata.GPSLongitude.toString(),
-          cameraModel: this.metadata.Model,
-          imageWidth: this.imageWidth,
-          imageHeight: this.imageHeight,
-          tags: this.formattedSelectedTags,
-          photographer: {id: this.selectedPhotographers},
-        })
-          .then((result) => {
-            this.uploadImageData(result.id);
-          }, error => {
-            this.$store.commit('errorSnackbar', 'Det gick inte att ladda upp bilden.');
-          });
-        }, 100);
+      if (this.$refs.form.validate()) {
+        this.uploadPress = true;
+        let date = moment(this.metadata.DateTime).format();
+        setTimeout(() => {
+          this.$store.dispatch('postImage', {
+            name: this.imageName,
+            description: this.imageDescription,
+            captured: date,
+            location: this.location,
+            gpsLatitude: this.formattedGps(this.metadata.GPSLatitude),
+            gpsLongitude: this.formattedGps(this.metadata.GPSLongitude),
+            cameraModel: this.metadata.Model,
+            imageWidth: this.imageWidth,
+            imageHeight: this.imageHeight,
+            tags: this.formattedSelectedTags,
+            photographer: {id: this.selectedPhotographers},
+          })
+            .then((result) => {
+              this.uploadImageData(result.id);
+            }, error => {
+              this.$store.commit('errorSnackbar', 'Det gick inte att ladda upp bilden.');
+            });
+          }, 100);
+      }
     },
     uploadImageData(id) {
       let formData = new FormData();
@@ -273,6 +277,7 @@ export default {
       this.$store.dispatch('uploadImage', {formData: formData, id})
         .then((result) => {
           this.$store.commit('successSnackbar', 'Din bild är nu uppladdad!');
+          this.uploadDialog = false;
         }, error => {
           console.log(error);
         });
