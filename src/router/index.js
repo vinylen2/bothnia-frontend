@@ -4,7 +4,7 @@ import VueRouter from 'vue-router'
 import SearchPage from '../components/SearchPage.vue'
 import Profile from '../components/Profile/Profile.vue'
 import ImagePage from '../components/Image/ImagePage.vue'
-import ImageInfo from '../components/Image/ImageInfo.vue'
+
 
 Vue.use(VueRouter)
 
@@ -29,11 +29,7 @@ Vue.use(VueRouter)
     name: 'image-page',
     component: ImagePage
   },
-  {
-    path: '/imageinfo',
-    name: 'image-info',
-    component: ImageInfo
-  },
+ 
 ]
 
 const router = new VueRouter({
